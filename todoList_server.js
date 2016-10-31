@@ -1,8 +1,30 @@
 var express = require('express')
 var app = express()
 
+var bodyParser = require('body-parser');
+// parse application/json
+app.use(bodyParser.json())
+// parse application/x-www-form-urlencoded
+app.use(bodyParser.urlencoded({ extended: false }));
+
 // use static files
 app.use(express.static('static'))
+
+app.post('/todo/add', function(request, response){
+    console.log('request.body-->', request.body)
+    var data = {
+        'id': request.body.id,
+        'task': request.body.task,
+        'created_time': request.body.created_time,
+    }
+    console.log(request.body.id, request.body.task)
+    var r = JSON.stringify(data)
+    response.send(r)
+})
+// app.post('/todo/add', function(request, response){
+//     console.log('request.body-->', request.body)
+//     response.send("post request")
+// })
 
 app.get('/', function(request, response){
     // // 读取首页消息

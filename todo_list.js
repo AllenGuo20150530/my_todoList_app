@@ -1,8 +1,8 @@
-// 定义自己的log
+// // 定义自己的log
 var log = function() {
     console.log.apply(console, arguments)
 }
-
+//
 // 插入TODOlist区域
 var todoList = function() {
     var todoContainer = `
@@ -70,4 +70,56 @@ var ajaxGetAll = function(){
             insertTodo(todo[0])
         }
     })
+}
+
+// 使用阿贾克斯post一个request
+var ajaxPostReq = function(){
+    var request = {
+                url: '/todo/add',
+                type: 'post',
+                contentType: 'application/json',
+                data: JSON.stringify({task: 'study', id: 1, created_time: 1234568}),
+                success: function(r) {
+                    console.log('ok',arguments)
+                    console.log('r--->', r)
+                    var todo = JSON.parse(r)
+                    insertTodo(todo)
+                },
+                error: function() {
+                    console.log('err',arguments)
+                }
+            }
+    $.ajax(request)
+}
+
+
+// 给 query button 绑定添加 todo 事件
+var bindEventQuery = function() {
+    log('bind query button')
+    $('#id-button-query').on('click', function(){
+        log('click query')
+        //先清空原有的todo-cell
+        $('#id-div-container').empty()
+        // 获得 输入的ID
+        var todoID = $('#id-input-todoID').val()
+        if(todoID == '' ) {
+            log('查询全部')
+            ajaxGetAll()
+        }
+
+        //else {
+        //     log('todoID', todoID)
+        //     todoGetTask(todoID)
+        //     log('todoGetTask() ends.')
+        //     var single = window.singleTask
+        //     log('single task:', single)
+        //     insertTodo(single)
+        // }
+    })
+}
+
+var __main = function(){
+    todoList()
+    bindEventQuery()
+    ajaxPostReq()
 }
