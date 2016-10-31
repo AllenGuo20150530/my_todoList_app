@@ -30,9 +30,6 @@ var todoList = function() {
 }
 
 
-
-
-
 // 使用阿贾克斯获取所有TODO task
 var ajaxGetAll = function(){
     $.ajax({
