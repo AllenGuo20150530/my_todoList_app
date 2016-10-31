@@ -35,8 +35,9 @@ var sendHtml = function(path, response){
 app.get('/todo/all', function(request, response){
     var all = [
         {
-            'id': 1,
-            'task': '喝水'
+            "created_time": 1476083080,
+            "id": 75,
+            "task": "to have dinner"
         }
     ]
     var data = JSON.stringify(all)

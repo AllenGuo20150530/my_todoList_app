@@ -28,6 +28,34 @@ var todoList = function() {
     `
     $('body').append(todoContainer)
 }
+// todo-cell的模板
+var templateTodo = function(todo) {
+    /*   todo =
+    "created_time": 1476083080,
+    "id": 75,
+    "task": "to have dinner"
+    }*/
+    var t = `
+        <div class='todo-cell'>
+            <button class='todo-done'>完成</button>
+            <button class='todo-delete'>删除</button>
+            <button class='todo-edit'>编辑</button>
+            <span class='todo-label' contenteditable='false'>${todo.task}</span>
+            <span>${todo.created_time}</span>
+            <span>${todo.id}</span>
+        </div>
+    `
+    return t
+}
+// 插入一个todo-cell
+var insertTodo = function(todo) {
+    log('insertTodo 开始！')
+    var t = templateTodo(todo)
+    log('要添加的代码：', t)
+    // 添加到 container 中
+    $('#id-div-container').append(t)
+    log('添加结束')
+}
 
 
 // 使用阿贾克斯获取所有TODO task
@@ -36,7 +64,10 @@ var ajaxGetAll = function(){
         type: 'get',
         url: '/todo/all',
         success: function(r){
-            console.log(r)
+            log('r-->', r)
+            var todo = JSON.parse(r)
+            log('todo-->', todo)
+            insertTodo(todo[0])
         }
     })
 }

@@ -8,8 +8,13 @@
     <script src='todo_list.js'></script>
     <script>
         $(document).ready(function(){
-            console.log(ajaxGetAll())
+            var log = function() {
+                console.log.apply(console, arguments)
+            }
             todoList()
+            log('todoList-->', 'successed!')
+            ajaxGetAll()
+
         })
     </script>
     <title>Document</title>
