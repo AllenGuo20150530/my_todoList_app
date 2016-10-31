@@ -1,0 +1,14 @@
+{
+  "name": "my_todoList_app",
+  "version": "1.0.0",
+  "description": "将之前的TODO list应用，自己使用express添加后端，实现ajax交互",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "author": "AllenG",
+  "license": "ISC",
+  "dependencies": {
+    "express": "^4.14.0"
+  }
+}
