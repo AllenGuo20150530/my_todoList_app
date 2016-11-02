@@ -1,6 +1,8 @@
 var express = require('express')
-var app = express()
 var bodyParser = require('body-parser');
+
+
+var app = express()
 // parse application/json
 app.use(bodyParser.json())
 // parse application/x-www-form-urlencoded
@@ -29,16 +31,39 @@ var sendHtml = function(path, response){
     })
 }
 
-var todos = [
-    {
-        "id": 1,
-        "task": "study",
-    },
-    {
-        id: 2,
-        task: 'go to school'
-    },
-]
+var fs = require('fs')
+var options = {
+    encoding: 'utf-8'
+}
+var loadTodos = function() {
+    var text = fs.readFileSync('todo.json', options)
+    var data = JSON.parse(text)
+    return data
+}
+
+var todos = loadTodos()
+// [
+//     {
+//         "id": 1,
+//         "task": "study",
+//     },
+//     {
+//         id: 2,
+//         task: 'go to school'
+//     },
+// ]
+
+// save todo
+var saveTodos = function(todos) {
+    var data = JSON.stringify(todos)
+    fs.writeFile('todo.json', data, options, function(e){
+        if(e != null) {
+            throw e
+        }
+        console.log('todo保存成功！')
+    })
+}
+
 // 往todos中添加新todo
 var addTodo = function(todo) {
     // todo = { task: "study"} 形式
@@ -97,12 +122,9 @@ app.get('/todo/all', function(request, response){
 app.post('/todo/add', function(request, response){
     console.log('request.body-->', request.body)
     var todo = request.body
-    console.log(request.body.task)
     addTodo(todo)
-    console.log(todos)
-    var data = JSON.stringify(todo)
-    console.log(data)
-    response.send(data)
+    saveTodos(todos)
+    response.send(JSON.stringify(todo))
 })
 
 // update todo
@@ -111,6 +133,8 @@ app.post('/todo/update', function(request, response){
     var todo = request.body
     console.log('todo-->', todo)
     console.log(updateTodo(todo))
+    saveTodos(todos)
+    response.send(JSON.stringify(todos))
 })
 
 // delete todo
@@ -119,10 +143,12 @@ app.post('/todo/delete', function(request, response){
     var id = Number(request.body.id)
     console.log('id-->', id)
     console.log(deleteTodo(id))
+    saveTodos(todos)
+    response.send(JSON.stringify(todos))
 })
 
 
-// 将jQuery库和todo_list.js文件引入, 如此才能在index.html中引用这两个文件
+// 将jQuery库和todo_list.js todo.json文件引入, 如此才能在index.html中引用这两个文件
 app.get('/todo_list.js', function (req, res) {
     console.log('__dirname-->', __dirname)
     res.sendFile( __dirname + "/" + "todo_list.js" );
@@ -131,6 +157,13 @@ app.get('/node_modules/jquery/dist/jquery.min.js', function (req, res) {
     console.log('__dirname-->', __dirname)
     res.sendFile( __dirname + "/node_modules/jquery/dist/jquery.min.js" );
 })
+app.get('/todo.json', function (req, res) {
+    console.log('__dirname-->', __dirname)
+    res.sendFile( __dirname + "/" + "todo.json" );
+})
+
+
+
 
 // 开启server，端口8081
 var server = app.listen(8081, function(){

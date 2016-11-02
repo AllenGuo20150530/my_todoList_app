@@ -133,25 +133,10 @@ var bindEventAdd = function() {
     })
 }
 
-// // 给删除按钮添加删除事件
-// var bindEventDelete = function() {
-//     $('#id-div-container').on('click', '.todo-delete', function(event){
-//         log(event.target)
-//         var target = $(event.target)
-//         var parent = target.parent()
-//         log(parent)
-//         var id = $(parent.children()[3]).text()
-//         var todoId = Number(id)
-//         log(typeof todoId)
-//         ajaxDeleteTodo(todoId)
-//         // 移除删除的task cell
-//         parent.remove()
-//     })
-// }
 
 // 点击 task cell 上的按钮时按钮时使事件加一条删除线
 var bindEventCell = function() {
-    $('.todo-cell').on('click', function(event){
+    $('#id-div-container').on('click', function(event){
         var target = $(event.target)
         log(target)
         var parent = target.parent()
@@ -181,34 +166,28 @@ var bindEventButtons = function() {
     bindEventAdd()
     bindEventCell()
 }
-// // 绑定编辑按钮，回车时更新
-// var bindEventEnter = function() {
-//     var todoContainer = document.querySelector('#id-div-container')
-//     todoContainer.addEventListener('keydown', function(event){
-//         log('container keydown', event, event.target)
-//         var target = event.target
-//         if(event.key === 'Enter') {
-//             log('按了回车')
-//             // 失去焦点
-//             target.blur()
-//             // 阻止默认行为的发生, 也就是不插入回车
-//             event.preventDefault()
-//             var todo_cell = target.parentElement
-//             log('当前元素--->', todo_cell)
-//             var task_id = todo_cell.children[5].innerHTML
-//             log('更改任务的ID--->', task_id)
-//             // var index = indexOfElement(todo_cell)
-//             // log('update index',  index)
-//             // 把元素在 todoList 中更新
-//             var task_update = {"task": target.innerHTML}
-//             log('更改后任务--->', task_update)
-//             // todoList.splice(index, 1)
-//             //saveTodos()
-//             todoUpdateTask(task_id, task_update)
-//             log('服务器更新任务成功！')
-//         }
-//     })
-// }
+// 绑定编辑按钮，回车时更新
+var bindEventEnter = function() {
+    $('.todo-cell').on('keydown', function(event){
+        log(event.target)
+        log(event.key)
+        var target = $(event.target)
+        if(event.key === 'Enter') {
+            // 失去焦点
+            target.blur()
+            // 阻止默认行为的发生, 也就是不插入回车
+            event.preventDefault()
+            var parent = $(event.target).parent()
+            var id = $(parent.children()[3]).text()
+            var todo = {}
+            todo.id = Number(id)
+            todo.task = $(parent.children()[4]).text()
+            log(todo)
+            ajaxUpdateTodo(todo)
+        }
+    })
+}
+
 
 var __main = function(){
     bindEventButtons()
