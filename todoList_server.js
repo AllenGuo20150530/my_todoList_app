@@ -33,7 +33,11 @@ var todos = [
     {
         "id": 1,
         "task": "study",
-    }
+    },
+    {
+        id: 2,
+        task: 'go to school'
+    },
 ]
 // 往todos中添加新todo
 var addTodo = function(todo) {
@@ -96,7 +100,7 @@ app.post('/todo/add', function(request, response){
     console.log(request.body.task)
     addTodo(todo)
     console.log(todos)
-    var data = JSON.stringify(todos)
+    var data = JSON.stringify(todo)
     console.log(data)
     response.send(data)
 })

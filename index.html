@@ -4,6 +4,12 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <style>
+        .todo-complete {
+            color: gray;
+            text-decoration: line-through;
+        }
+    </style>
     <script src="node_modules/jquery/dist/jquery.min.js"></script>
     <script src='todo_list.js'></script>
     <script>
@@ -11,17 +17,30 @@
             var log = function() {
                 console.log.apply(console, arguments)
             }
-            //__main()
+            __main()
         })
     </script>
     <title>Document</title>
 </head>
 <body>
     欢迎使用todoList Web App
-    <!-- <div class='todo-main'>
-
-
-    </div> -->
+    <div class='todo-main'>
+        <div class="todo-form">
+            <input id='id-input-todo' type="text">
+            <button id='id-button-add' type="button">Add</button>
+            <button id='id-button-query' type='button'>Query</button>
+        </div>
+        <div id="id-div-container">
+            <!-- <div class='todo-cell todo-complete'>
+                <button class='todo-done'>完成</button>
+                <button class='todo-delete'>删除</button>
+                <button class='todo-edit'>编辑</button>
+                <span class='todo-label' contenteditable='false'>task</span>
+                <span>ID</span>
+            </div>
+            -->
+        </div>
+    </div>
 
 </body>
 </html>
