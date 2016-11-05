@@ -4,13 +4,13 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <meta http-equiv="X-UA-Compatible" content="ie=edge">
-    <style>
-        .todo-complete {
-            color: gray;
-            text-decoration: line-through;
-        }
-    </style>
-    <script src="node_modules/jquery/dist/jquery.min.js"></script>
+    <link rel="stylesheet" href="todo.css">
+    <link rel="stylesheet" href="tooltip-theme-default.css" />
+    <script src="http://cdn.bootcss.com/jquery/3.1.1/jquery.min.js"></script>
+    <link href="http://cdn.bootcss.com/bootstrap/3.3.7/css/bootstrap.min.css" rel="stylesheet">
+    <script src="http://cdn.bootcss.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
+    <!-- <link href="http://cdn.bootcss.com/bootstrap/4.0.0-alpha.5/css/bootstrap.min.css" rel="stylesheet">
+    <script src="http://cdn.bootcss.com/bootstrap/4.0.0-alpha.5/js/bootstrap.min.js"></script> -->
     <script src='todo_list.js'></script>
     <script>
         $(document).ready(function(){
@@ -23,22 +23,64 @@
     <title>Document</title>
 </head>
 <body>
-    欢迎使用todoList Web App
-    <div class='todo-main'>
+    <div class='welcome'>
+        <strong><em>欢迎使用todoList Web App</em></strong>
+    </div>
+
+    <div class='container'>
         <div class="todo-form">
             <input id='id-input-todo' type="text">
             <button id='id-button-add' type="button">Add</button>
             <button id='id-button-query' type='button'>Query</button>
         </div>
         <div id="id-div-container">
-            <!-- <div class='todo-cell todo-complete'>
+            <div class='todo-cell todo-complete'>
                 <button class='todo-done'>完成</button>
                 <button class='todo-delete'>删除</button>
                 <button class='todo-edit'>编辑</button>
                 <span class='todo-label' contenteditable='false'>task</span>
                 <span>ID</span>
             </div>
-            -->
+            <table class='table table-hover'>
+                <thead>
+                    <tr>
+                        <th>Done</th>
+                        <th>ID</th>
+                        <th>Task</th>
+                        <th>Time</th>
+                        <th>Status</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr class="success">
+                        <td>
+                            <input class='todo-done' type="checkbox">
+                        </td>
+                        <td>1</td>
+                        <td>Go to school</td>
+                        <td>20160909</td>
+                        <td>Doing</td>
+                    </tr>
+                    <tr class="danger">
+                        <td>
+                            <input class='todo-done' type="checkbox">
+                        </td>
+                        <td>1</td>
+                        <td>Go to school</td>
+                        <td>20160909</td>
+                        <td>Deleted</td>
+                    </tr>
+                    <tr>
+                        <td>
+                            <input class='todo-done' type="checkbox">
+                        </td>
+                        <td>1</td>
+                        <td><span class='todo-label' contenteditable='true'>Go to school</span></td>
+                        <td>20160909</td>
+                        <td>Deleted</td>
+                    </tr>
+                </tbody>
+            </table>
         </div>
     </div>
 

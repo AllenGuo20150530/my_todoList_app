@@ -161,7 +161,10 @@ app.get('/todo.json', function (req, res) {
     console.log('__dirname-->', __dirname)
     res.sendFile( __dirname + "/" + "todo.json" );
 })
-
+app.get('/todo.css', function (req, res) {
+    console.log('__dirname-->', __dirname)
+    res.sendFile( __dirname + "/" + "todo.css" );
+})
 
 
 

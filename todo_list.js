@@ -4,6 +4,24 @@ var log = function() {
 }
 
 // todo-cell的模板
+
+// var templateTodo = function(todo) {
+//     /*   todo =
+//     "created_time": 1476083080,
+//     "id": 75,
+//     "task": "to have dinner"
+//     }*/
+//     var t = `
+//         <div class='todo-cell'>
+//             <button class='todo-done'>完成</button>
+//             <button class='todo-delete'>删除</button>
+//             <button class='todo-edit'>编辑</button>
+//             <span>${todo.id}</span>
+//             <span class='todo-label' contenteditable='false'>${todo.task}</span>
+//         </div>
+//     `
+//     return t
+// }
 var templateTodo = function(todo) {
     /*   todo =
     "created_time": 1476083080,
@@ -11,13 +29,15 @@ var templateTodo = function(todo) {
     "task": "to have dinner"
     }*/
     var t = `
-        <div class='todo-cell'>
-            <button class='todo-done'>完成</button>
-            <button class='todo-delete'>删除</button>
-            <button class='todo-edit'>编辑</button>
-            <span>${todo.id}</span>
-            <span class='todo-label' contenteditable='false'>${todo.task}</span>
-        </div>
+        <tr>
+            <td>
+                <input class='todo-done' type="checkbox">
+            </td>
+            <td>${todo.id}</td>
+            <td><span class='todo-task' contenteditable='false'>${todo.task}</span></td>
+            <td>20160910</td>
+            <td>未进行</td>
+        </tr>
     `
     return t
 }
@@ -27,7 +47,7 @@ var insertTodo = function(todo) {
     var t = templateTodo(todo)
     log('要添加的代码：', t)
     // 添加到 container 中
-    $('#id-div-container').append(t)
+    $('tbody').append(t)
     log('添加结束')
 }
 
