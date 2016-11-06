@@ -46,13 +46,30 @@ var todos = loadTodos()
 //     {
 //         "id": 1,
 //         "task": "study",
+            // time: 201612020202,
+            // checked: "Done",
 //     },
 //     {
 //         id: 2,
-//         task: 'go to school'
+//        task: 'go to school',
+//        time: 201612020202,
+//        checked: "Undone",
+//     },
+//    {
+//         id: 3,
+//        task: 'work',
+//        time: 201612020202,
+//        checked: "Deleted",
 //     },
 // ]
-
+// var todos = [
+//     {
+//         "task":"hello",
+//         "id":1,
+//         "time":"1234567",
+//         "checked":"Done"
+//     },
+// ]
 // save todo
 var saveTodos = function(todos) {
     var data = JSON.stringify(todos)
@@ -74,6 +91,8 @@ var addTodo = function(todo) {
     }else {
         todo.id = 1
     }
+    todo.time = 1234567
+    todo.checked = "Undone"
     todos.push(todo)
 }
 
