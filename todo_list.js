@@ -5,23 +5,7 @@ var log = function() {
 
 // todo-cell的模板
 
-// var templateTodo = function(todo) {
-//     /*   todo =
-//     "created_time": 1476083080,
-//     "id": 75,
-//     "task": "to have dinner"
-//     }*/
-//     var t = `
-//         <div class='todo-cell'>
-//             <button class='todo-done'>完成</button>
-//             <button class='todo-delete'>删除</button>
-//             <button class='todo-edit'>编辑</button>
-//             <span>${todo.id}</span>
-//             <span class='todo-label' contenteditable='false'>${todo.task}</span>
-//         </div>
-//     `
-//     return t
-// }
+
 var templateTodo = function(todo) {
     /*   todo =
     "time": 1476083080,
@@ -29,13 +13,16 @@ var templateTodo = function(todo) {
     "task": "to have dinner"
     "checked": "Done"
     }*/
-    if(todo.checked === "Done") {
+    if(todo.checked === 'Done') {
         var t = `
             <tr class='success'>
                 <td>
                     <input class='todo-done' type="checkbox" checked='checked'>
                 </td>
-                <td>${todo.id}</td>
+                <td>
+                    <span class='glyphicon glyphicon-remove'></span>
+                    <span contenteditable='false'>${todo.id}</span>
+                </td>
                 <td>
                     <span class="glyphicon glyphicon-pencil"></span>
                     <span class='todo-task' contenteditable='false'>${todo.task}</span>
@@ -50,20 +37,14 @@ var templateTodo = function(todo) {
                 <td>
                     <input class='todo-done' type="checkbox">
                 </td>
-                <td>${todo.id}</td>
-                <td><span class='todo-task' contenteditable='false'>${todo.task}</span></td>
-                <td>${todo.time}</td>
-                <td>${todo.checked}</td>
-            </tr>
-        `
-    }else if (todo.checked === "Deleted") {
-        var t = `
-            <tr class='danger'>
                 <td>
-                    <input class='todo-done' type="checkbox">
+                    <span class='glyphicon glyphicon-remove'></span>
+                    <span contenteditable='false'>${todo.id}</span>
                 </td>
-                <td>${todo.id}</td>
-                <td><span class='todo-task' contenteditable='false'>${todo.task}</span></td>
+                <td>
+                    <span class="glyphicon glyphicon-pencil"></span>
+                    <span class='todo-task' contenteditable='false'>${todo.task}</span>
+                </td>
                 <td>${todo.time}</td>
                 <td>${todo.checked}</td>
             </tr>
@@ -122,33 +103,14 @@ var ajaxAddTodo = function(todo){
 
 // delete todo
 var ajaxDeleteTodo = function(todoId){
+    log('要删除todo的id为-->', todoId)
     var request = {
                 url: '/todo/delete',
                 type: 'post',
                 contentType: 'application/json',
                 data: JSON.stringify({id: todoId}),
                 success: function(r) {
-                    console.log('ok',arguments)
-                    console.log('r--->', r)
-                    var todo = JSON.parse(r)
-                    // insertTodo(todo)
-                },
-                error: function() {
-                    console.log('err',arguments)
-                }
-            }
-    $.ajax(request)
-}
-
-// update todo
-var ajaxUpdateTodo = function(todo){
-    var request = {
-                url: '/todo/update',
-                type: 'post',
-                contentType: 'application/json',
-                data: JSON.stringify(todo),
-                success: function(r) {
-                    console.log('ok',arguments)
+                    console.log('OK, 删除已成功！',arguments)
                     console.log('r--->', r)
                     // var todo = JSON.parse(r)
                     // insertTodo(todo)
@@ -157,7 +119,33 @@ var ajaxUpdateTodo = function(todo){
                     console.log('err',arguments)
                 }
             }
+    log('request已生成！')
     $.ajax(request)
+    log('已提出阿贾克斯请求！')
+}
+
+// update todo
+var ajaxUpdateTodo = function(todo){
+    log('开始更新todos！')
+    log('传入的todo为：', todo)
+    var request = {
+                url: '/todo/update',
+                type: 'post',
+                contentType: 'application/json',
+                data: JSON.stringify(todo),
+                success: function(r) {
+                    console.log('OK，更新完成！',arguments)
+                    console.log('r--->', r)
+                    // var todo = JSON.parse(r)
+                    // insertTodo(todo)
+                },
+                error: function() {
+                    console.log('err',arguments)
+                }
+            }
+    log('request已生成！')
+    $.ajax(request)
+    log('已提出阿贾克斯请求！')
 }
 
 // 给 query button 绑定添加 todo 事件
@@ -192,52 +180,79 @@ var bindEventDone = function() {
             var tr = target.parent().parent()
             log('parent-->',tr)
             if (target[0].hasAttribute('checked')) {
+                log('点击时，状态为：Done')
                 todoUndone(target)
-                var tr = target.parent().parent()
                 var todo = todoGenerator(tr)
                 log('todo-->', todo)
-                // ajaxUpdateTodo(todo)
+                ajaxUpdateTodo(todo)
             }else if (!target[0].hasAttribute('checked')) {
-                log(target[0].hasAttribute('checked'))
+                log('点击时，状态为：Undone')
                 // 点击的是check按钮，且未完成，则标记为浅绿色
-                tr.addClass('success')
-                // 将status标记为完成
-                var status = $(tr.children()[4])
-                log('status-->', status)
-                status.text('Done')
-                log('status-->', status.text())
-                // 将check box属性设置为checked
-                target[0].setAttribute('checked', 'checked')
+                todoDone(target)
+                var todo = todoGenerator(tr)
+                log('todo-->', todo)
+                ajaxUpdateTodo(todo)
             }
-        }else if (target.hasClass('glyphicon')) {
+        }else if (target.hasClass('glyphicon-pencil')) {
             todoEdit(target)
+        }else if (target.hasClass('glyphicon-remove')) {
+            log(event.target)
+            log($(event.target).parent()[0])
+            log('您确定删除此todo task！')
+            var td = $(event.target).parent()
+            log('删除task所在父级',$(td[0]))
+            var id = $(td.children()[1]).text()
+            log('要删除的id-->', id)
+            ajaxDeleteTodo(id)
+            // 移除删除的task cell
+            td.parent().remove()
         }
     })
 }
-var todoGenerator = function(tr, status) {
+var todoGenerator = function(tr) {
     log('todo正在生成中！')
     var todo = {}
-    todo.id = Number($(tr.children()[1]).text())
-    log(todo.id)
-    todo.task = $($(tr.children()[2]).children()[1]).text()
-    log(todo.task)
+    var children = tr.children()
+    todo.id = Number($(children[1]).text())
+    log('当前id-->',todo.id)
+    todo.task = $($(children[2]).children()[1]).text()
+    log("当前task-->",todo.task)
     // todo.checked = status
-    todo.checked = $(tr.children()[4]).text()
-    log(todo.checked)
-    log('todo已生成！-->', todo)
+    todo.checked = $(children[4]).text()
+    log('当前checked-->',todo.checked)
+    log('todo已生成！', todo)
+    return todo
 }
 var todoUndone = function(target) {
     log(target[0].hasAttribute('checked'))
+    log('开始将Done状态修改为Undone状态······')
     // 点击的是check按钮，已完成变为未完成
     var tr = target.parent().parent()
+    log('目标所在tr为:', tr)
     tr.removeClass('success')
     // 将status标记为完成
     var status = $(tr.children()[4])
-    log('status-->', status[0])
     status.text('Undone')
-    log('status-->', status.text())
+    log('状态已修改为：', status.text())
     // 将check box属性设置为checked
     target[0].removeAttribute('checked')
+    log('状态修改已完成！')
+}
+var todoDone = function(target) {
+    // 点击的是check按钮，且未完成，则标记为浅绿色
+    log(target[0].hasAttribute('checked'))
+    log('开始将Undone状态修改为Done状态······')
+    // 点击的是check按钮，已完成变为未完成
+    var tr = target.parent().parent()
+    log('目标所在tr为:', tr)
+    tr.addClass('success')
+    // 将status标记为完成
+    var status = $(tr.children()[4])
+    status.text('Done')
+    log('状态已修改为：', status.text())
+    // 将check box属性设置为checked
+    target[0].setAttribute('checked', 'checked')
+    log('状态修改已完成！')
 }
 
 var todoEdit = function(target) {
@@ -249,30 +264,6 @@ var todoEdit = function(target) {
     todoSpan.attr('contenteditable', true)
     todoSpan.focus()
 }
-// 点击 task cell 上的按钮时按钮时使事件加一条删除线
-// var bindEventCell = function() {
-//     $('.table').on('click', function(event){
-//         var target = $(event.target)
-//         log('target-->' ,target)
-//         var tr = target.parent().parent()
-//         log('parent-->',tr)
-//         if(target.hasClass('todo-done')) {
-//             // 点击的是check按钮，则标记为浅绿色
-//             tr.addClass('success')
-//         // }else if (target.hasClass('todo-done')) {
-//         //     // 点击 完成 按钮时使事件加一条删除线
-//         //     parent.addClass('todo-complete')
-//         // }else if (target.hasClass('todo-delete')) {
-//         //     // 给删除按钮添加删除事件
-//         //     var id = $(parent.children()[3]).text()
-//         //     var todoId = Number(id)
-//         //     log(typeof todoId)
-//         //     ajaxDeleteTodo(todoId)
-//         //     // 移除删除的task cell
-//         //     parent.remove()
-//         // }
-//     })
-// }
 
 // 所有的点击button的事件
 var bindEventButtons = function() {

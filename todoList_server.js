@@ -80,7 +80,19 @@ var saveTodos = function(todos) {
         console.log('todo保存成功！')
     })
 }
-
+var getTime = function() {
+    var d = new Date()
+    var month = 1 + d.getMonth()
+    // 月份, 0-11
+    var day = d.getDate()
+    // 日期, 1-31
+    var hours = d.getHours()
+    // 小时, 0-23
+    var minutes = d.getMinutes()
+    // 分钟, 0-59
+    var time = `${month}月${day}日 ${hours}:${minutes}`
+    return time
+}
 // 往todos中添加新todo
 var addTodo = function(todo) {
     // todo = { task: "study"} 形式
@@ -91,7 +103,7 @@ var addTodo = function(todo) {
     }else {
         todo.id = 1
     }
-    todo.time = 1234567
+    todo.time = getTime()
     todo.checked = "Undone"
     todos.push(todo)
 }
@@ -125,6 +137,7 @@ var updateTodo = function(todo) {
     if (index != -1) {
         var todoUpdate = todos[index]
         todoUpdate.task = todo.task
+        todoUpdate.checked = todo.checked
         return '更新成功！'
     }else if (index === -1) {
         return '没有相关任务！'

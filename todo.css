@@ -1,4 +1,18 @@
-.todo-complete {
-    color: gray;
-    text-decoration: line-through;
+h1 {
+    font-size: 36px;
+    margin: 30px auto;
+    width: 520px;
+    display: block;
+}
+strong {
+    width: 310px;
+}
+.form-control {
+    margin: 10px 0;
+}
+
+#id-button-add, #id-button-query {
+    margin-left: 10px;
+    float: right;
+    width: 60px;
 }
