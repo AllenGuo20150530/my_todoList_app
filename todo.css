@@ -16,3 +16,50 @@ strong {
     float: right;
     width: 60px;
 }
+.alert-ground {
+    position: fixed;
+    top: 0px;
+    left: 0px;
+    background: black;
+    opacity: 0.5;
+    width: 100%;
+    height: 100%;
+}
+.alert-off {
+    display: none;
+}
+.alert-box {
+    background: white;
+    width: 330px;
+    height: 190px;
+    margin: 0 auto;
+    position: relative;
+    top: 40%;
+    transform: translateY(-50%);
+    border-color: orange;
+    border: 5px;
+    border-style: solid;
+}
+.text-position {
+    width: 100%;
+    height: 40px;
+    text-align: center;
+    font-size: 30px;
+    margin: 10px 0px;
+}
+div#id-div-message {
+    font-size: 16px;
+    padding-top: 15px;
+}
+.alert-btn {
+    width: 80px;
+    margin: 10px 0;
+}
+#id-button-cancel {
+    margin-left: 58px;
+    margin-right: 20px;
+}
+#id-button-ok {
+    margin-left: 20px;
+    margin-right: 58px;
+}

@@ -90,7 +90,7 @@ var getTime = function() {
     // 小时, 0-23
     var minutes = d.getMinutes()
     // 分钟, 0-59
-    var time = `${month}月${day}日 ${hours}:${minutes}`
+    var time = `${month} / ${day}  ${hours}:${minutes}`
     return time
 }
 // 往todos中添加新todo

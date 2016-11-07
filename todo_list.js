@@ -172,7 +172,7 @@ var bindEventAdd = function() {
         $('#id-input-todo').val('')
     })
 }
-var bindEventDone = function() {
+var bindEventTable = function() {
     $('.table').on('click', function(event){
         var target = $(event.target)
         log('target-->' ,target)
@@ -200,13 +200,29 @@ var bindEventDone = function() {
             log($(event.target).parent()[0])
             log('您确定删除此todo task！')
             var td = $(event.target).parent()
-            log('删除task所在父级',$(td[0]))
-            var id = $(td.children()[1]).text()
-            log('要删除的id-->', id)
-            ajaxDeleteTodo(id)
-            // 移除删除的task cell
-            td.parent().remove()
+            // 标记要删除的td
+            td.addClass('td-delete')
+            $('.alert-container').removeClass('alert-off')
+            log('标记task所在父级',$(td[0]))
+
         }
+    })
+}
+
+var bindEventCancel = function() {
+    $('#id-button-cancel').on('click', function(){
+        $('.alert-container').addClass('alert-off')
+    })
+}
+var bindEventOk = function() {
+    $('#id-button-ok').on('click', function(){
+        var td = $('.td-delete')
+        var id = $(td.children()[1]).text()
+        log('要删除的id-->', id)
+        ajaxDeleteTodo(id)
+        // 移除删除的task cell
+        td.parent().remove()
+        $('.alert-container').addClass('alert-off')
     })
 }
 var todoGenerator = function(tr) {
@@ -269,8 +285,9 @@ var todoEdit = function(target) {
 var bindEventButtons = function() {
     bindEventQuery()
     bindEventAdd()
-    // bindEventCell()
-    bindEventDone()
+    bindEventCancel()
+    bindEventTable()
+    bindEventOk()
 }
 // 绑定编辑按钮，回车时更新
 var bindEventEnter = function() {
