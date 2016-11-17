@@ -8,7 +8,7 @@ var log = function() {
 
 var templateTodo = function(todo) {
     /*   todo =
-    "time": 1476083080,
+    "time": 11 / 7 10:20,
     "id": 75,
     "task": "to have dinner"
     "checked": "Done"
@@ -172,6 +172,7 @@ var bindEventAdd = function() {
         $('#id-input-todo').val('')
     })
 }
+// click事件委托到table
 var bindEventTable = function() {
     $('.table').on('click', function(event){
         var target = $(event.target)
@@ -202,16 +203,18 @@ var bindEventTable = function() {
             var td = $(event.target).parent()
             // 标记要删除的td
             td.addClass('td-delete')
+            td.parent().addClass('danger')
             $('.alert-container').removeClass('alert-off')
             log('标记task所在父级',$(td[0]))
 
         }
     })
 }
-
+// 提示框的cancel OK按钮绑定
 var bindEventCancel = function() {
     $('#id-button-cancel').on('click', function(){
         $('.alert-container').addClass('alert-off')
+        $('.danger').removeClass('danger')
     })
 }
 var bindEventOk = function() {
@@ -225,6 +228,32 @@ var bindEventOk = function() {
         $('.alert-container').addClass('alert-off')
     })
 }
+
+// 绑定编辑按钮，回车时更新
+var bindEventEnter = function() {
+    $('tbody').on('keydown', function(event){
+        log(event.target)
+        log(event.key)
+        var target = $(event.target)
+        if(event.key === 'Enter') {
+            // 失去焦点
+            target.blur()
+            // 阻止默认行为的发生, 也就是不插入回车
+            event.preventDefault()
+            target.attr('contenteditable', false)
+            var tr = target.parent().parent()
+            var td = target.parent()
+            var todo = {}
+            var id = $(tr.children()[1]).text()
+            todo.id = Number(id)
+            todo.task = $(td.children()[1]).text()
+            todo.checked = $(tr.children()[4]).text()
+            ajaxUpdateTodo(todo)
+        }
+    })
+}
+
+// 从当前页面提前相应的todo
 var todoGenerator = function(tr) {
     log('todo正在生成中！')
     var todo = {}
@@ -239,6 +268,7 @@ var todoGenerator = function(tr) {
     log('todo已生成！', todo)
     return todo
 }
+// 标记TODO完成状态
 var todoUndone = function(target) {
     log(target[0].hasAttribute('checked'))
     log('开始将Done状态修改为Undone状态······')
@@ -270,7 +300,7 @@ var todoDone = function(target) {
     target[0].setAttribute('checked', 'checked')
     log('状态修改已完成！')
 }
-
+// task的编辑
 var todoEdit = function(target) {
     log('target has Class "glyphicon"')
     var td = target.parent()
@@ -288,33 +318,9 @@ var bindEventButtons = function() {
     bindEventCancel()
     bindEventTable()
     bindEventOk()
+    bindEventEnter()
 }
-// 绑定编辑按钮，回车时更新
-var bindEventEnter = function() {
-    $('tbody').on('keydown', function(event){
-        log(event.target)
-        log(event.key)
-        var target = $(event.target)
-        if(event.key === 'Enter') {
-            // 失去焦点
-            target.blur()
-            // 阻止默认行为的发生, 也就是不插入回车
-            event.preventDefault()
-            target.attr('contenteditable', false)
-            var tr = target.parent().parent()
-            var td = target.parent()
-            var todo = {}
-            var id = $(tr.children()[1]).text()
-            todo.id = Number(id)
-            todo.task = $(td.children()[1]).text()
-            todo.checked = $(tr.children()[4]).text()
-            ajaxUpdateTodo(todo)
-        }
-    })
-}
-
 
 var __main = function(){
     bindEventButtons()
-    bindEventEnter()
 }

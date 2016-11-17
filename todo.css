@@ -12,7 +12,7 @@ strong {
 }
 
 #id-button-add, #id-button-query {
-    margin-left: 10px;
+    margin-left: 25px;
     float: right;
     width: 60px;
 }
@@ -34,7 +34,7 @@ strong {
     height: 190px;
     margin: 0 auto;
     position: relative;
-    top: 40%;
+    top: 30%;
     transform: translateY(-50%);
     border-color: orange;
     border: 5px;
