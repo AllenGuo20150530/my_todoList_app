@@ -28,9 +28,25 @@
 
     <div class='container'>
         <div class="todo-form">
-            <input id='id-input-todo' class='form-control ' type="text" placeholder="What's the Next?">
-            <button id='id-button-add' class='btn btn-sm' type="button">Add</button>
-            <button id='id-button-query' class='btn btn-sm' type='button'>Query</button>
+
+            <!-- <button id='id-button-add' class='btn btn-sm btn-myself' type="button">Add</button>
+            <button id='id-button-query' class='btn btn-sm btn-myself' type='button'>Query</button> -->
+            <div id='id-div-class' class="btn-group">
+                <button id='id-button-class' type="button" class="btn btn-sm dropdown-toggle" data-toggle="dropdown">
+                    Default
+                    <span class="caret"></span>
+                </button>
+                <ul class="dropdown-menu" role="menu">
+                    <li><a class='class-i'>JS</a></li>
+                    <li><a class='class-i'>jQuery</a></li>
+                    <li><a class='class-i'>AngularJS</a></li>
+                    <li class="divider"></li>
+                    <li><a id='id-a-new'>NewClass</a></li>
+                </ul>
+            </div>
+            <div id='id-div-input'>
+                <input id='id-input-todo' class='form-control' type="text" placeholder="What's the Next?">
+            </div>
         </div>
         <div id="id-div-container">
             <table class='table table-hover'>
@@ -58,5 +74,16 @@
             <button id='id-button-ok' class='alert-btn btn btn-default'>OK</button>
         </div>
     </div>
+    <!-- <script>
+        $(window).resize(function(event){
+            log('window resized')
+            // 获取父div: class='todo-form'的width，并计算id-div-input的宽度
+            var todoFormWidth = $('.todo-form').width()
+            var divClassWidth = $('#id-div-class').width()
+            var divInputWidth = (todoFormWidth - divClassWidth).toString() + 'px'
+            // 修改id-div-input的宽度
+            $('#id-div-input').width(divInputWidth)
+        })
+    </script> -->
 </body>
 </html>

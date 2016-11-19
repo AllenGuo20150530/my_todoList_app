@@ -149,15 +149,15 @@ var ajaxUpdateTodo = function(todo){
 }
 
 // 给 query button 绑定添加 todo 事件
-var bindEventQuery = function() {
-    log('bind query button')
-    $('#id-button-query').on('click', function(){
-        log('click query')
-        //先清空原有的todo-cell
-        $('tbody').empty()
-        ajaxGetAll()
-    })
-}
+// var bindEventQuery = function() {
+//     log('bind query button')
+//     $('#id-button-query').on('click', function(){
+//         log('click query')
+//         //先清空原有的todo-cell
+//         $('tbody').empty()
+//         ajaxGetAll()
+//     })
+// }
 // 给 Add button 绑定添加 todo 事件
 var bindEventAdd = function() {
     $('#id-button-add').on('click', function(){
@@ -310,17 +310,36 @@ var todoEdit = function(target) {
     todoSpan.attr('contenteditable', true)
     todoSpan.focus()
 }
+// 初始化input大小
+var inputInit = function() {
+    // 获取父div: class='todo-form'的width，并计算id-div-input的宽度
+    var todoFormWidth = $('.todo-form').width()
+    var divClassWidth = $('#id-div-class').width()
+    var divInputWidth = (todoFormWidth - divClassWidth).toString() + 'px'
+    // 修改id-div-input的宽度
+    $('#id-div-input').width(divInputWidth)
+}
 
 // 所有的点击button的事件
 var bindEventButtons = function() {
-    bindEventQuery()
+    // bindEventQuery()
     bindEventAdd()
     bindEventCancel()
     bindEventTable()
     bindEventOk()
     bindEventEnter()
+
 }
 
 var __main = function(){
+    inputInit()
+    ajaxGetAll()
     bindEventButtons()
 }
+
+$(document).ready(function(){
+    __main()
+})
+$(window).resize(function(){
+    inputInit()
+})

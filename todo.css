@@ -11,10 +11,27 @@ strong {
     margin: 10px 0;
 }
 
-#id-button-add, #id-button-query {
+/*#id-button-add, #id-button-query, #id-button-class {
     margin-left: 25px;
     float: right;
     width: 60px;
+}*/
+
+#id-div-class {
+    /*margin: 10px 20px 20px 10px;*/
+    float: left;
+    width: 75px;
+}
+#id-div-input {
+    float: left;
+}
+#id-button-class {
+    height: 34px;
+    margin: 10px 0;
+}
+/*#id-input-todo {
+    width: auto;
+    display: inline-block;*/
 }
 .alert-ground {
     position: fixed;
