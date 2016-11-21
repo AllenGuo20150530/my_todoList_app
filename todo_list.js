@@ -158,20 +158,7 @@ var ajaxUpdateTodo = function(todo){
 //         ajaxGetAll()
 //     })
 // }
-// 给 Add button 绑定添加 todo 事件
-var bindEventAdd = function() {
-    $('#id-button-add').on('click', function(){
-        log('click add')
-        // 获得 输入的task
-        var task = $('#id-input-todo').val()
-        // log('task-->', task)
-        var todo = {'task': task}
-        // log('todo-->', todo)
-        ajaxAddTodo(todo)
-        // bindEventButtons()
-        $('#id-input-todo').val('')
-    })
-}
+
 // input 输入框，回车键添加TODO
 var bindEventEnterAdd = function() {
     $('#id-input-todo').on('keydown', function(event){
