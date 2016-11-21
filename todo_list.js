@@ -172,6 +172,22 @@ var bindEventAdd = function() {
         $('#id-input-todo').val('')
     })
 }
+// input 输入框，回车键添加TODO
+var bindEventEnterAdd = function() {
+    $('#id-input-todo').on('keydown', function(event){
+        log('发生的事件是-->', event.target)
+        if(event.key == 'Enter') {
+            // 获得 输入的task
+            var task = $('#id-input-todo').val()
+            // log('task-->', task)
+            var todo = {'task': task}
+            // log('todo-->', todo)
+            ajaxAddTodo(todo)
+            $('#id-input-todo').val('')
+        }
+    })
+}
+
 // click事件委托到table
 var bindEventTable = function() {
     $('.table').on('click', function(event){
