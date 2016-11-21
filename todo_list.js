@@ -149,28 +149,28 @@ var ajaxUpdateTodo = function(todo){
 }
 
 // 给 query button 绑定添加 todo 事件
-// var bindEventQuery = function() {
-//     log('bind query button')
-//     $('#id-button-query').on('click', function(){
-//         log('click query')
-//         //先清空原有的todo-cell
-//         $('tbody').empty()
-//         ajaxGetAll()
-//     })
-// }
+var bindEventQuery = function() {
+    log('刷新时查询')
+    //先清空原有的todo-cell
+    $('tbody').empty()
+    ajaxGetAll()
+}
 
-// input 输入框，回车键添加TODO
-var bindEventEnterAdd = function() {
+// input 输入框，回车键添加TODO, 实现Add按钮功能
+var bindEventAdd = function() {
     $('#id-input-todo').on('keydown', function(event){
         log('发生的事件是-->', event.target)
         if(event.key == 'Enter') {
             // 获得 输入的task
             var task = $('#id-input-todo').val()
             // log('task-->', task)
-            var todo = {'task': task}
-            // log('todo-->', todo)
-            ajaxAddTodo(todo)
-            $('#id-input-todo').val('')
+            // 判断是否有字符输入
+            if(task != '') {
+                var todo = {'task': task}
+                // log('todo-->', todo)
+                ajaxAddTodo(todo)
+                $('#id-input-todo').val('')
+            }
         }
     })
 }
@@ -208,6 +208,7 @@ var bindEventTable = function() {
             td.addClass('td-delete')
             td.parent().addClass('danger')
             $('.alert-container').removeClass('alert-off')
+            // $('#id-div-ground').addClass('alert-ground')
             log('标记task所在父级',$(td[0]))
 
         }
@@ -325,7 +326,7 @@ var inputInit = function() {
 
 // 所有的点击button的事件
 var bindEventButtons = function() {
-    // bindEventQuery()
+    bindEventQuery()
     bindEventAdd()
     bindEventCancel()
     bindEventTable()
@@ -336,7 +337,6 @@ var bindEventButtons = function() {
 
 var __main = function(){
     inputInit()
-    ajaxGetAll()
     bindEventButtons()
 }
 

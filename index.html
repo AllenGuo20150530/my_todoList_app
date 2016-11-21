@@ -11,14 +11,6 @@
     <script src="http://cdn.bootcss.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
     <script src='todo_list.js'></script>
     <link rel="stylesheet" href="todo.css">
-    <script>
-        $(document).ready(function(){
-            var log = function() {
-                console.log.apply(console, arguments)
-            }
-            __main()
-        })
-    </script>
     <title>Document</title>
 </head>
 <body>
@@ -41,7 +33,8 @@
                     <li><a class='class-i'>jQuery</a></li>
                     <li><a class='class-i'>AngularJS</a></li>
                     <li class="divider"></li>
-                    <li><a id='id-a-new'>NewClass</a></li>
+                    <!-- <li><a id='id-a-new'>NewClass</a></li> -->
+                    <li><input id='id-input-newClass' type="text" placeholder='New Class'></li>
                 </ul>
             </div>
             <div id='id-div-input'>
@@ -66,7 +59,7 @@
         </div>
     </div>
     <div class='alert-container alert-off'>
-        <div class='alert-ground'></div>
+        <div id='id-div-ground' class='alert-ground'></div>
         <div class='alert-box'>
             <div id='id-div-title' class='text-position'>Warning!!!</div>
             <div id='id-div-message' class='text-position'>Are you sure to delete the task?</div>
@@ -74,16 +67,5 @@
             <button id='id-button-ok' class='alert-btn btn btn-default'>OK</button>
         </div>
     </div>
-    <!-- <script>
-        $(window).resize(function(event){
-            log('window resized')
-            // 获取父div: class='todo-form'的width，并计算id-div-input的宽度
-            var todoFormWidth = $('.todo-form').width()
-            var divClassWidth = $('#id-div-class').width()
-            var divInputWidth = (todoFormWidth - divClassWidth).toString() + 'px'
-            // 修改id-div-input的宽度
-            $('#id-div-input').width(divInputWidth)
-        })
-    </script> -->
 </body>
 </html>
