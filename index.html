@@ -23,18 +23,16 @@
 
             <!-- <button id='id-button-add' class='btn btn-sm btn-myself' type="button">Add</button>
             <button id='id-button-query' class='btn btn-sm btn-myself' type='button'>Query</button> -->
-            <div id='id-div-class' class="btn-group">
-                <button id='id-button-class' type="button" class="btn btn-sm dropdown-toggle" data-toggle="dropdown">
-                    Default
-                    <span class="caret"></span>
-                </button>
+            <div id='id-div-folder' class="btn-group">
+                <button id='id-button-folder' type="button" class="btn btn-sm dropdown-toggle" data-toggle="dropdown" data-folderid=0>Default<span class="caret"></span></button>
                 <ul class="dropdown-menu" role="menu">
-                    <li><a class='class-i'>JS</a></li>
-                    <li><a class='class-i'>jQuery</a></li>
-                    <li><a class='class-i'>AngularJS</a></li>
+                    <li><a class='folder-i' data-folderid=1>JS</a></li>
+
+                    <li><a class='folder-i' data-folderid=2>jQuery</a></li>
+                    <li><a class='folder-i' data-folderid=3>AngularJS</a></li>
                     <li class="divider"></li>
                     <!-- <li><a id='id-a-new'>NewClass</a></li> -->
-                    <li><input id='id-input-newClass' type="text" placeholder='New Class'></li>
+                    <li><input id='id-input-newFolder' type="text" placeholder='New Class'></li>
                 </ul>
             </div>
             <div id='id-div-input'>

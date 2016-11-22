@@ -318,7 +318,7 @@ var todoEdit = function(target) {
 var inputInit = function() {
     // 获取父div: class='todo-form'的width，并计算id-div-input的宽度
     var todoFormWidth = $('.todo-form').width()
-    var divClassWidth = $('#id-div-class').width()
+    var divClassWidth = $('#id-div-folder').width()
     var divInputWidth = (todoFormWidth - divClassWidth).toString() + 'px'
     // 修改id-div-input的宽度
     $('#id-div-input').width(divInputWidth)
