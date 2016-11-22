@@ -185,10 +185,10 @@ app.get('/todo_list.js', function (req, res) {
     console.log('__dirname-->', __dirname)
     res.sendFile( __dirname + "/" + "todo_list.js" );
 })
-app.get('/node_modules/jquery/dist/jquery.min.js', function (req, res) {
-    console.log('__dirname-->', __dirname)
-    res.sendFile( __dirname + "/node_modules/jquery/dist/jquery.min.js" );
-})
+// app.get('/node_modules/jquery/dist/jquery.min.js', function (req, res) {
+//     console.log('__dirname-->', __dirname)
+//     res.sendFile( __dirname + "/node_modules/jquery/dist/jquery.min.js" );
+// })
 app.get('/todo.json', function (req, res) {
     console.log('__dirname-->', __dirname)
     res.sendFile( __dirname + "/" + "todo.json" );
@@ -197,7 +197,10 @@ app.get('/todo.css', function (req, res) {
     console.log('__dirname-->', __dirname)
     res.sendFile( __dirname + "/" + "todo.css" );
 })
-
+app.get('/todo_folder.js', function (req, res) {
+    console.log('__dirname-->', __dirname)
+    res.sendFile( __dirname + "/" + "todo_folder.js" );
+})
 
 
 // 开启server，端口8081
