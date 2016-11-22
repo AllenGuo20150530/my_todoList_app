@@ -42,34 +42,30 @@ var loadTodos = function() {
 }
 
 var todos = loadTodos()
-// [
-//     {
-//         "id": 1,
-//         "task": "study",
-            // time: 201612020202,
-            // checked: "Done",
-//     },
-//     {
-//         id: 2,
-//        task: 'go to school',
-//        time: 201612020202,
-//        checked: "Undone",
-//     },
-//    {
-//         id: 3,
-//        task: 'work',
-//        time: 201612020202,
-//        checked: "Deleted",
-//     },
-// ]
-// var todos = [
-//     {
-//         "task":"hello",
-//         "id":1,
-//         "time":"1234567",
-//         "checked":"Done"
-//     },
-// ]
+/*
+var todoData = {
+                folders: {
+                            'default': '0',
+                            'JS': 1,
+                },
+                todos: {
+                    '0': [
+                            {
+                                id: 1,
+                                task: 'task',
+                                time: 201505,
+                                checked: 'Done'
+                            },
+                            {
+                                id: 2,
+                                task: 'study',
+                                time: 12334,
+                                checked: 'Done'
+                            }
+                    ]
+                },
+}
+*/
 // save todo
 var saveTodos = function(todos) {
     var data = JSON.stringify(todos)
