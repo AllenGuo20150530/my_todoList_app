@@ -62,7 +62,18 @@ var insertTodo = function(todo) {
     $('tbody').append(t)
     log('添加结束')
 }
-
+// 插入以保存的folders
+var insertFolder = function(folders) {
+    var keys = Object.keys(folders)
+    for (var i = 1; i < keys.length; i++) {
+        var key = keys[i]
+        var value = folders[key]
+        var temp = `
+            <li><a class='folder-i' data-folderid=${value}>${key}</a></li>
+        `
+        $('.divider').before(temp)
+    }
+}
 
 // 使用阿贾克斯获取所有TODO task
 var ajaxGetAll = function(){
@@ -71,12 +82,15 @@ var ajaxGetAll = function(){
         url: '/todo/all',
         success: function(r){
             log('r-->', r)
-            var todos = JSON.parse(r)
-            log('todos-->', todos)
-            for (var i = 0; i < todos.length; i++) {
-                var todo = todos[i]
+            var todoData = JSON.parse(r)
+            var todos0 = todoData.todos['0']
+            log('todoData-->', todos0)
+            for (var i = 0; i < todos0.length; i++) {
+                var todo = todos0[i]
                 insertTodo(todo)
             }
+            var folders = todoData.folders
+            insertFolder(folders)
         }
     })
 }
@@ -126,7 +140,7 @@ var ajaxDeleteTodo = function(todoId){
 
 // update todo
 var ajaxUpdateTodo = function(todo){
-    log('开始更新todos！')
+    log('开始更新todoData！')
     log('传入的todo为：', todo)
     var request = {
                 url: '/todo/update',
@@ -155,7 +169,14 @@ var bindEventQuery = function() {
     $('tbody').empty()
     ajaxGetAll()
 }
-
+//get当前todo list 的folderName 和Id
+var getFolderId = function() {
+    var folder = []
+    var folderButton = $('#id-button-folder')
+    var buttonName = folderButton.text()
+    var buttonId = folderButton.attr('data-folderid')
+    return buttonId
+}
 // input 输入框，回车键添加TODO, 实现Add按钮功能
 var bindEventAdd = function() {
     $('#id-input-todo').on('keydown', function(event){
@@ -163,10 +184,12 @@ var bindEventAdd = function() {
         if(event.key == 'Enter') {
             // 获得 输入的task
             var task = $('#id-input-todo').val()
+            var folderId = getFolderId()
             // log('task-->', task)
             // 判断是否有字符输入
             if(task != '') {
-                var todo = {'task': task}
+                var todo = {'task': task,
+                            'folderId': folderId}
                 // log('todo-->', todo)
                 ajaxAddTodo(todo)
                 $('#id-input-todo').val('')
@@ -261,6 +284,8 @@ var bindEventEnter = function() {
 var todoGenerator = function(tr) {
     log('todo正在生成中！')
     var todo = {}
+    var folderId = getFolderId()
+    todo.folderId = folderId
     var children = tr.children()
     todo.id = Number($(children[1]).text())
     log('当前id-->',todo.id)

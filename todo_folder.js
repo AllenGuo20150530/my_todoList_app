@@ -1,98 +1,90 @@
-// var todos = {
-//     folder: [
-//         {
-//             folderName: 'Default',
-//             folderId: 0
-//         },
-//         {
-//             folderName: 'js',
-//             folderId: 1,
-//         }
-//     ],
-//     todo: [
-//         {
-//             id: 1,
-//             task: 'DOM 操作',
-//             time: '201609',
-//             checked: 'Done',
-//             folderId: 1
-//         }
-//     ]
-// }
+/* todo_folder.js*/
 
+// post a ajax request to update the folders
+var ajaxUpdateFolder = function(folderArray) {
+        log('开始更新folders！')
+        log('传入的folder为：', folderArray)
+        var request = {
+                    url: '/folder/update',
+                    type: 'post',
+                    contentType: 'application/json',
+                    data: JSON.stringify(folderArray),
+                    success: function(r) {
+                        console.log('OK，更新完成！',arguments)
+                        console.log('r--->', r)
+                    },
+                    error: function() {
+                        console.log('err',arguments)
+                    }
+                }
+        log('request已生成！')
+        $.ajax(request)
+        log('已提出阿贾克斯请求！')
+}
+// post a ajax request to get all the todos of the folder with folderId
+var ajaxGetFolder = function(folderId) {
+    log('开始获取folder里的全部todos！')
+    log('传入的folderId为：', folderId)
+    var request = {
+                url: '/folder/get',
+                type: 'post',
+                contentType: 'application/json',
+                data: JSON.stringify([folderId]),
+                success: function(r) {
+                    console.log('OK，完成获取！',arguments)
+                    console.log('r--->', r)
+                },
+                error: function() {
+                    console.log('err',arguments)
+                }
+            }
+    log('request已生成！')
+    $.ajax(request)
+    log('已提出阿贾克斯请求！')
+}
 
-
-// 切换folder
-// var folders = document.querySelector('#id-div-folder')
-// folders.addEventListener('click', function(event){
-//     var target = event.target
-//     if (target.classList.contains('folder-i')) {
-//         var targetId = target.dataset.folderid
-//         var targetName = target.innerText
-//         // dataset.folderId出错
-//         log(targetId, targetName)
-//         var folderButton = document.querySelector('#id-button-folder')
-//         var folderName = folderButton.innerText
-//         var folderId = folderButton.dataset.folderid
-//         log(folderId, folderName)
-//         folderButton.innerHTML = targetName + '<span class="caret"></span>'
-//         folderButton.dataset.folderid = targetId
-//
-//         target.dataset.folderid = folderId
-//         target.innerText = folderName
-//     }
-// })
-
-// 添加新的folder
-// var newFolder = document.querySelector('#id-input-newFolder')
-// newFolder.addEventListener('keydown', function(event){
-//     if(event.key == 'Enter') {
-//         var folders = document.querySelectorAll('.folder-i')
-//         var len = folders.length
-//         var lastFolder = folders[len - 1]
-//         var lastId = Number(lastFolder.dataset.folderid)
-//         log(lastId)
-//         var folder = newFolder.value
-//         var temp = `
-//             <li><a class='folder-i' data-folderid=${lastId + 1}>${folder}</a></li>
-//         `
-//         document.querySelector('.divider').insertAdjacentHTML('beforebegin', temp)
-//         newFolder.value = ''
-//     }
-// })
-// jQuery 实现并封装函数
-
-// 添加新folder
+// bind a Enter event to add a new folder
 var bindNewFolder = function() {
     $('#id-input-newFolder').on('keydown', function(event){
         if(event.key == 'Enter') {
+            // get all folders
             var folders = $('.folder-i')
+            // get the number of folders
             var len = folders.length
-            var lastFolder = $(folders[len - 1])
-            var lastId = Number(lastFolder.data('folderid'))
-            log(lastId)
-            var folder = $('#id-input-newFolder').val()
+            // the new folderId = 1 or n + 1 when len > 0
+            var newId = '1'
+            if(len > 0){
+                var lastFolder = $(folders[len - 1])
+                var lastId = len + 1
+                log(lastId)
+                newId = lastId.toString()
+            }
+            // get the new folder's name
+            var newFolder = $('#id-input-newFolder').val()
+            // insert the new folder into HTML
             var temp = `
-                <li><a class='folder-i' data-folderid=${lastId + 1}>${folder}</a></li>
+                <li><a class='folder-i' data-folderid=${newId}>${newFolder}</a></li>
             `
             $('.divider').before(temp)
-            newFolder.value = ''
-            /*
-            *清空table
-            *Todos新增新空list
-            */
+            $('#id-input-newFolder').val('')
+            // call ajaxUpdateFolder() to update the todoData.folders
+            ajaxUpdateFolder([newFolder, newId])
         }
     })
 }
 
-// 切换folder
+//  bind a click event to switch folders
 var bindSwitchFolder = function() {
     $('#id-div-folder').on('click', function(event){
         var target = $(event.target)
         if (target.hasClass('folder-i')) {
-            // 点击目标为folder聊表中的folder项
+            // 点击目标为folder列表中的folder项
             switchFolder(target)
-            // display相应的list
+            // display the responding list
+            //get the folderId
+            var folderId = getFolderId()
+            log(folderId)
+            ajaxGetFolder(folderId)
         }
     })
 }
@@ -126,8 +118,6 @@ var bindDeleteFolder = function() {
         // todos中删除相应的list
     })
 }
-bindDeleteFolder()
-
 
 var bindEvents = function() {
     bindSwitchFolder()

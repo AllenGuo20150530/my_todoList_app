@@ -41,7 +41,7 @@ var loadTodos = function() {
     return data
 }
 
-var todos = loadTodos()
+var todoData = loadTodos()
 /*
 var todoData = {
                 folders: {
@@ -89,27 +89,40 @@ var getTime = function() {
     var time = `${month} / ${day}  ${hours}:${minutes}`
     return time
 }
+
+//get当前todo list 的folderName 和Id
+// var getFolderId = function() {
+//     var folder = []
+//     var folderButton = $('#id-button-folder')
+//     var buttonName = folderButton.text()
+//     var buttonId = folderButton.attr('data-folderid')
+//     return buttonId
+// }
 // 往todos中添加新todo
 var addTodo = function(todo) {
-    // todo = { task: "study"} 形式
+    // todo = { task: "study", folderId: folderId} 形式
     // todos empty or not
-    var len = todos.length
+    var folderId = todo.folderId
+    var currentTodos = todoData.todos[folderId]
+    var len = currentTodos.length
     if(len > 0) {
-        todo.id = todos[len - 1].id + 1
+        todo.id = currentTodos[len - 1].id + 1
     }else {
         todo.id = 1
     }
     todo.time = getTime()
     todo.checked = "Undone"
-    todos.push(todo)
+    currentTodos.push(todo)
 }
 
 // 通过id来查找到todo, 并返回其在Todos中的下标
-var todoById = function(id) {
+var todoById = function(todo) {
     var index = -1
+    var folderId = todo.folderId
+    var todos = todoData.todos[folderId]
     for (var i = 0; i < todos.length; i++) {
         var t = todos[i]
-        if(t.id == id) {
+        if(t.id == todo.id) {
             index = i
         }
     }
@@ -129,9 +142,10 @@ var deleteTodo = function(id) {
 
 // 通过id来更新相对应的todo
 var updateTodo = function(todo) {
-    var index = todoById(todo.id)
+    var index = todoById(todo)
+    var folderId = todo.folderId
     if (index != -1) {
-        var todoUpdate = todos[index]
+        var todoUpdate = todoData.todos[folderId][index]
         todoUpdate.task = todo.task
         todoUpdate.checked = todo.checked
         return '更新成功！'
@@ -139,19 +153,39 @@ var updateTodo = function(todo) {
         return '没有相关任务！'
     }
 }
-
+// 更新folders
+var updateFolder = function(folderArray) {
+    // update folders
+    var folders = todoData.folders
+    var folderName = folderArray[0]
+    var folderId = folderArray[1]
+    folders[folderName] = folderId
+    console.log(folders)
+    // add a new blank folder in todos
+    var todos = todoData.todos
+    todos[folderId] = []
+    console.log(todoData)
+}
 // query all todos
 app.get('/todo/all', function(request, response){
+    var data = JSON.stringify(todoData)
+    response.send(data)
+})
+// query all todos of the folder with folderId
+app.post('/folder/get', function(request, response){
+    console.log('获取特定folder内的todos')
+    var folderId = request.body[0]
+    console.log(folderId)
+    var todos = todoData.todos[folderId]
     var data = JSON.stringify(todos)
     response.send(data)
 })
-
 // add todo
 app.post('/todo/add', function(request, response){
     console.log('request.body-->', request.body)
     var todo = request.body
     addTodo(todo)
-    saveTodos(todos)
+    saveTodos(todoData)
     response.send(JSON.stringify(todo))
 })
 
@@ -161,8 +195,19 @@ app.post('/todo/update', function(request, response){
     var todo = request.body
     console.log('todo-->', todo)
     console.log(updateTodo(todo))
-    saveTodos(todos)
-    response.send(JSON.stringify(todos))
+    saveTodos(todoData)
+    response.send(JSON.stringify(todoData))
+})
+
+// update folder
+app.post('/folder/update', function(request, response){
+    console.log('request.body-->', request.body)
+
+    var folderArray = request.body
+    console.log('folder-->', folderArray)
+    updateFolder(folderArray)
+    saveTodos(todoData)
+    response.send(JSON.stringify(todoData))
 })
 
 // delete todo
