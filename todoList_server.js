@@ -1,3 +1,8 @@
+/*
+    启动脚本todoList_server.js
+    启动脚本app.get方法，用于指定不同的访问路径所对应的回调函数callback
+    这叫做“路由”（routing）。
+*/
 var express = require('express')
 var bodyParser = require('body-parser');
 
@@ -8,8 +13,11 @@ app.use(bodyParser.json())
 // parse application/x-www-form-urlencoded
 app.use(bodyParser.urlencoded({ extended: false }));
 // setup static files
+app.use(express.static('public'))
 app.use(express.static('static'))
-
+// app.get('/', function(request, response){
+//     response.sendFile('./public/index.html')
+// })
 app.use(express.static('node_modules'))
 
 // // 将index.html 的内容发送到页面中，生成动态网页
