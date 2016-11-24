@@ -12,25 +12,28 @@ app.use(express.static('static'))
 
 app.use(express.static('node_modules'))
 
+// // 将index.html 的内容发送到页面中，生成动态网页
+// app.get('/', function(request, response){
+//     var path = 'index.html'
+//     sendHtml(path, response)
+// })
+// // 读取HTML文件内容并发送
+// var sendHtml = function(path, response){
+//     // 编码utf-8
+//     var options = {
+//          encoding: 'utf-8'
+//     }
+//     // 请求fs：file system 文件系统
+//     // fs 是 node 中处理文件和目录的库
+//     var fs = require('fs')
+//     fs.readFile(path, options, function(err, data){
+//         console.log('读取の内容是：', data)
+//         response.send(data)
+//     })
+// }
 
-app.get('/', function(request, response){
-    var path = 'index.html'
-    sendHtml(path, response)
-})
-// 读取HTML文件内容并发送
-var sendHtml = function(path, response){
-    // 编码utf-8
-    var options = {
-         encoding: 'utf-8'
-    }
-    // 请求fs：file system 文件系统
-    // fs 是 node 中处理文件和目录的库
-    var fs = require('fs')
-    fs.readFile(path, options, function(err, data){
-        console.log('读取の内容是：', data)
-        response.send(data)
-    })
-}
+// 直接访问public中的静态网页index.html
+app.use(express.static(__dirname + '/public'))
 
 var fs = require('fs')
 var options = {
