@@ -12,12 +12,9 @@ var app = express()
 app.use(bodyParser.json())
 // parse application/x-www-form-urlencoded
 app.use(bodyParser.urlencoded({ extended: false }));
+
 // setup static files
-app.use(express.static('public'))
 app.use(express.static('static'))
-// app.get('/', function(request, response){
-//     response.sendFile('./public/index.html')
-// })
 app.use(express.static('node_modules'))
 
 // // 将index.html 的内容发送到页面中，生成动态网页
