@@ -180,8 +180,8 @@ var getFolderId = function() {
 // input 输入框，回车键添加TODO, 实现Add按钮功能
 var bindEventAdd = function() {
     $('#id-input-todo').on('keydown', function(event){
-        log('发生的事件是-->', event.target)
         if(event.key == 'Enter') {
+            log('发生的事件是-->', event.target)
             // 获得 输入的task
             var task = $('#id-input-todo').val()
             var folderId = getFolderId()
