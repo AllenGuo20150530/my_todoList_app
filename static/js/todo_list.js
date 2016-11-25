@@ -4,8 +4,6 @@ var log = function() {
 }
 
 // todo-cell的模板
-
-
 var templateTodo = function(todo) {
     /*   todo =
     "time": 11 / 7 10:20,
@@ -164,13 +162,6 @@ var ajaxUpdateTodo = function(todo){
     log('已提出阿贾克斯请求！')
 }
 
-// 给 query button 绑定添加 todo 事件
-var bindEventQuery = function() {
-    log('刷新时查询')
-    //先清空原有的todo-cell
-    $('tbody').empty()
-    ajaxGetDefault()
-}
 //get当前todo list 的folderName 和Id
 var getFolderId = function() {
     var folder = []
@@ -179,6 +170,15 @@ var getFolderId = function() {
     var buttonId = folderButton.attr('data-folderid')
     return buttonId
 }
+
+// 给 query button 绑定添加 todo 事件
+var bindEventQuery = function() {
+    log('刷新时查询')
+    //先清空原有的todo-cell
+    $('tbody').empty()
+    ajaxGetDefault()
+}
+
 // input 输入框，回车键添加TODO, 实现Add按钮功能
 var bindEventAdd = function() {
     $('#id-input-todo').on('keydown', function(event){
@@ -200,7 +200,7 @@ var bindEventAdd = function() {
     })
 }
 
-// click事件委托到table
+// click事件委托到table, 分别实现删除、编辑、完成的操作
 var bindEventTable = function() {
     $('.table').on('click', function(event){
         var target = $(event.target)
@@ -239,6 +239,7 @@ var bindEventTable = function() {
         }
     })
 }
+
 // 提示框的cancel OK按钮绑定
 var bindEventCancel = function() {
     $('#id-button-cancel').on('click', function(){
@@ -341,15 +342,6 @@ var todoEdit = function(target) {
     todoSpan.attr('contenteditable', true)
     todoSpan.focus()
 }
-// 初始化input大小
-var inputInit = function() {
-    // 获取父div: class='todo-form'的width，并计算id-div-input的宽度
-    var todoFormWidth = $('.todo-form').width()
-    var divClassWidth = $('#id-div-folder').width()
-    var divInputWidth = (todoFormWidth - divClassWidth).toString() + 'px'
-    // 修改id-div-input的宽度
-    $('#id-div-input').width(divInputWidth)
-}
 
 // 所有的点击button的事件
 var bindEventButtons = function() {
@@ -362,14 +354,17 @@ var bindEventButtons = function() {
 
 }
 
-var __main = function(){
-    inputInit()
-    bindEventButtons()
+// 初始化input大小
+var inputInit = function() {
+    // 获取父div: class='todo-form'的width，并计算id-div-input的宽度
+    var todoFormWidth = $('.todo-form').width()
+    var divClassWidth = $('#id-div-folder').width()
+    var divInputWidth = (todoFormWidth - divClassWidth).toString() + 'px'
+    // 修改id-div-input的宽度
+    $('#id-div-input').width(divInputWidth)
 }
 
-$(document).ready(function(){
-    __main()
-})
+// 监听窗口大小变化的事件，随窗口大小变化改变input添加框的大小
 $(window).resize(function(){
     inputInit()
 })

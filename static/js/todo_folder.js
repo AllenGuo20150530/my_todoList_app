@@ -1,4 +1,9 @@
-/* todo_folder.js*/
+/* todo_folder.js
+    *folder的新建和删除
+    *切换folder时会将相应的显示
+    *delete一个folder，会将Todos完全删除
+    *暂时delete时没有危险提示，可以加上
+*/
 
 // post a ajax request to update the folders
 var ajaxUpdateFolder = function(folderArray) {
@@ -21,6 +26,7 @@ var ajaxUpdateFolder = function(folderArray) {
         $.ajax(request)
         log('已提出阿贾克斯请求！')
 }
+
 // post a ajax request to get all the todos of the folder with folderId
 var ajaxGetFolder = function(folderId) {
     log('开始获取folder里的全部todos！')
@@ -48,7 +54,8 @@ var ajaxGetFolder = function(folderId) {
     $.ajax(request)
     log('已提出阿贾克斯请求！')
 }
-// post a ajax request to delete the todos of the folder with folderId
+
+// post a ajax request to delete the todos of the folder
 var ajaxDeleteTodos = function(folder) {
     log('开始删除folder里的全部todos！')
     log('传入的folder为：', folder)
@@ -74,6 +81,23 @@ var ajaxDeleteTodos = function(folder) {
     log('request已生成！')
     $.ajax(request)
     log('已提出阿贾克斯请求！')
+}
+
+// 根据点击的目标来获取相应的folderName和folderId，将其放到分类按钮上
+var switchFolder = function(target) {
+    // 获取folder项的folderId 和 Name
+    var targetId = target.attr('data-folderid')
+    var targetName = target.text()
+    log(targetId, targetName)
+    // 获取当前folder button上显示的folder及其Name和Id
+    var folderButton = $('#id-button-folder')
+    var buttonName = folderButton.text()
+    var buttonId = folderButton.attr('data-folderid')
+    log(buttonId, buttonName)
+    target.attr('data-folderid', buttonId)
+    target.text(buttonName)
+    folderButton.html(targetName + '<span class="caret"></span>')
+    folderButton.attr('data-folderid', targetId)
 }
 
 // bind a Enter event to add a new folder
@@ -121,21 +145,6 @@ var bindSwitchFolder = function() {
         }
     })
 }
-var switchFolder = function(target) {
-    // 获取folder项的folderId 和 Name
-    var targetId = target.attr('data-folderid')
-    var targetName = target.text()
-    log(targetId, targetName)
-    // 获取当前folder button上显示的folder及其Name和Id
-    var folderButton = $('#id-button-folder')
-    var buttonName = folderButton.text()
-    var buttonId = folderButton.attr('data-folderid')
-    log(buttonId, buttonName)
-    target.attr('data-folderid', buttonId)
-    target.text(buttonName)
-    folderButton.html(targetName + '<span class="caret"></span>')
-    folderButton.attr('data-folderid', targetId)
-}
 
 // 删除一个folder
 var bindDeleteFolder = function() {
@@ -155,15 +164,21 @@ var bindDeleteFolder = function() {
     })
 }
 
-// 点击某个folder时，切换到仅显示当前的folder内的task
-
-
+// 将所有绑定的事件统一管理
 var bindEvents = function() {
     bindSwitchFolder()
     bindNewFolder()
     bindDeleteFolder()
 }
 
-$(document).ready(function(){
+// 创建主函数，包括todo_list.js内的bindEventButtons()和inputInit()函数
+var __main = function(){
+    inputInit()
+    bindEventButtons()
     bindEvents()
+}
+
+// 文档加载完成后，执行主函数__main()
+$(document).ready(function(){
+    __main()
 })
