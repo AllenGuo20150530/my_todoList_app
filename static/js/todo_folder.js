@@ -30,9 +30,15 @@ var ajaxGetFolder = function(folderId) {
                 type: 'post',
                 contentType: 'application/json',
                 data: JSON.stringify([folderId]),
-                success: function(r) {
+                success: function(response) {
                     console.log('OK，完成获取！',arguments)
-                    console.log('r--->', r)
+                    console.log('r--->', response)
+                    $('tbody').empty()
+                    var todos = JSON.parse(response)
+                    for (var i = 0; i < todos.length; i++) {
+                        var todo = todos[i]
+                        insertTodo(todo)
+                    }
                 },
                 error: function() {
                     console.log('err',arguments)
@@ -118,6 +124,9 @@ var bindDeleteFolder = function() {
         // todos中删除相应的list
     })
 }
+
+// 点击某个folder时，切换到仅显示当前的folder内的task
+
 
 var bindEvents = function() {
     bindSwitchFolder()

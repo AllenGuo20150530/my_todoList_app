@@ -13,6 +13,8 @@ var templateTodo = function(todo) {
     "task": "to have dinner"
     "checked": "Done"
     }*/
+    log('开始生成todo模板')
+    log('传入的todo为-->', todo)
     if(todo.checked === 'Done') {
         var t = `
             <tr class='success'>
@@ -76,7 +78,7 @@ var insertFolder = function(folders) {
 }
 
 // 使用阿贾克斯获取所有TODO task
-var ajaxGetAll = function(){
+var ajaxGetDefault = function(){
     $.ajax({
         type: 'get',
         url: '/todo/all',
@@ -167,7 +169,7 @@ var bindEventQuery = function() {
     log('刷新时查询')
     //先清空原有的todo-cell
     $('tbody').empty()
-    ajaxGetAll()
+    ajaxGetDefault()
 }
 //get当前todo list 的folderName 和Id
 var getFolderId = function() {
