@@ -48,6 +48,33 @@ var ajaxGetFolder = function(folderId) {
     $.ajax(request)
     log('已提出阿贾克斯请求！')
 }
+// post a ajax request to delete the todos of the folder with folderId
+var ajaxDeleteTodos = function(folder) {
+    log('开始删除folder里的全部todos！')
+    log('传入的folder为：', folder)
+    var request = {
+                url: '/folder/delete',
+                type: 'post',
+                contentType: 'application/json',
+                data: JSON.stringify(folder),
+                success: function(response) {
+                    console.log('OK，完成获取！',arguments)
+                    console.log('r--->', response)
+                    $('tbody').empty()
+                    var todos = JSON.parse(response)
+                    for (var i = 0; i < todos.length; i++) {
+                        var todo = todos[i]
+                        insertTodo(todo)
+                    }
+                },
+                error: function() {
+                    console.log('err',arguments)
+                }
+            }
+    log('request已生成！')
+    $.ajax(request)
+    log('已提出阿贾克斯请求！')
+}
 
 // bind a Enter event to add a new folder
 var bindNewFolder = function() {
@@ -113,14 +140,17 @@ var switchFolder = function(target) {
 // 删除一个folder
 var bindDeleteFolder = function() {
     $('#id-button-delete-folder').on('click', function(event){
-        log(event.target)
+        log('delete 按钮被点击到了')
         var folderButton = $('#id-button-folder')
         var folderName = folderButton.text()
         var folderId = folderButton.data('folderid')
+        // 删除当前的所有task
+        ajaxDeleteTodos([folderName,folderId])
         // 删除之后显示default的task
         $('a[data-folderid=0]').parent().remove()
         folderButton.html('Default<span class="caret"></span>')
         folderButton.attr('data-folderid', '0')
+        ajaxGetFolder('0')
         // todos中删除相应的list
     })
 }
@@ -131,6 +161,7 @@ var bindDeleteFolder = function() {
 var bindEvents = function() {
     bindSwitchFolder()
     bindNewFolder()
+    bindDeleteFolder()
 }
 
 $(document).ready(function(){

@@ -228,7 +228,20 @@ app.post('/todo/delete', function(request, response){
     saveTodos(todos)
     response.send(JSON.stringify(todos))
 })
-
+// delete folder
+app.post('/folder/delete', function(request, response){
+    console.log('request.body-->', request.body)
+    // 删除相应的folder
+    var folderName = request.body[0]
+    delete todoData.folders[folderName]
+    // 删除相应的todos
+    var folderId = Number(request.body[1])
+    console.log('folderId-->', folderId)
+    delete todoData.todos[folderId]
+    saveTodos(todoData)
+    // 将默认分类返回以显示
+    response.send(JSON.stringify(todoData.todos['0']))
+})
 
 // 将jQuery库和todo_list.js todo.json文件引入, 如此才能在index.html中引用这两个文件
 app.get('/todo_list.js', function (req, res) {
